@@ -6,7 +6,7 @@ module Rack
     def initialize(app = nil, &b)
       @app = app || lambda {|env| [404, [], []] }
       @matchers = []
-      @global_options = {:preserve_host => true, :x_forwarded_host => true, :matching => :all, :verify_ssl => true, :headers => {}}
+      @global_options = {:preserve_host => true, :x_forwarded_host => true, :matching => :all, :verify_ssl => true}
       instance_eval &b if block_given?
     end
 
@@ -18,7 +18,7 @@ module Rack
       uri = matcher.get_uri(rackreq.fullpath,env)
       all_opts = @global_options.dup.merge(matcher.options)
       headers = Rack::Utils::HeaderHash.new
-      puts headers
+      headers.merge! app_opts[:headers]
       env.each { |key, value|
         if key =~ /HTTP_(.*)/
           headers[$1] = value
