@@ -18,7 +18,7 @@ module Rack
       uri = matcher.get_uri(rackreq.fullpath,env)
       all_opts = @global_options.dup.merge(matcher.options)
       headers = Rack::Utils::HeaderHash.new
-      headers.merge! app_opts[:headers]
+      headers.merge! all_opts[:headers]
       env.each { |key, value|
         if key =~ /HTTP_(.*)/
           headers[$1] = value
